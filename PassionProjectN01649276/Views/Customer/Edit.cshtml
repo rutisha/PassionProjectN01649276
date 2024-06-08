@@ -1,0 +1,21 @@
+﻿@model PassionProjectN01649276.Models.CustomerDto
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Customer</h2>
+<form action="/Customer/Update/@Model.CustomerId" method="POST">
+    <input type="text" style="display:none;" name="CustomerId" value="@Model.CustomerId" />
+    <div>
+        <label>Customer Name:</label> <input type="text" name="CustomerName" value="@Model.CustomerName" />
+    </div>
+    <div>
+        <label>Email:</label> <input type="text" name="Email" value="@Model.Email" />
+    </div>
+  
+    <div>
+        <input type="submit" value="Update Customer" />
+
+    </div>
+</form>
+

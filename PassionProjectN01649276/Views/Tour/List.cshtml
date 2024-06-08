@@ -1,0 +1,12 @@
+﻿@model IEnumerable<PassionProjectN01649276.Models.TourDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+@foreach(var tour in Model)
+ {
+    <h3><a href="/Tour/Show/@tour.Tourid">@tour.Tourname</a></h3>
+    <div>Price: $ @tour.Price</div>
+
+ }

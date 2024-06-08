@@ -1,0 +1,28 @@
+﻿@model PassionProjectN01649276.Models.BookingDto
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Booking</h2>
+<form action="/Booking/Update/@Model.BookingId" method="POST">
+    <input type="text" style="display:none;" name="BookingId" value="@Model.BookingId" />
+    <div>
+        <label>Booking Date:</label> <input type="text" name="BookingDate" value="@Model.Bookingdate"/>
+    </div>
+    <div>
+        <label>Status:</label> <input type="text" name="Status" value="@Model.Status" />
+    </div>
+    <div>
+        <label>CustomerId:</label> <input type="text" name="CustomerId" value="@Model.CustomerId"/>
+    </div>
+    <div>
+        <label>TourId:</label> <input type="text" name="TourId" value="@Model.TourId" />
+    </div>
+    <div>
+        <input type="submit" value="Update Booking" />
+
+    </div>
+</form>
+
+
+

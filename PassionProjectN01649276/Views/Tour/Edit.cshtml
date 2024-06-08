@@ -1,0 +1,26 @@
+﻿@model PassionProjectN01649276.Models.TourDto
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Tour</h2>
+<form action="/Tour/Update/@Model.Tourid" method="POST">
+    <input type="text" style="display:none;" name="TourId" value="@Model.Tourid" />
+    <div>
+        <label>Tour Name:</label> <input type="text" name="TourName" value="@Model.Tourname" />
+    </div>
+    <div>
+        <label>Description:</label> <input type="text" name="Description" value="@Model.Description" />
+    </div>
+    <div>
+        <label>Location:</label> <input type="Text" name="Location" value="@Model.Location" />
+    </div>
+    <div>
+        <label>Price:</label> <input type="number" name="Price" value="@Model.Price"/>
+    </div>
+    <div>
+        <input type="submit" value="Update Tour" />
+
+    </div>
+</form>
+

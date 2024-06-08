@@ -1,0 +1,13 @@
+﻿@model IEnumerable<PassionProjectN01649276.Models.BookingDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+@foreach (var booking in Model)
+{
+    <h3><a href="/Booking/Show/@booking.BookingId">BookingNo. # @booking.BookingId</a></h3>
+    <div>Date: @booking.Bookingdate</div>
+}
+
+

@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create New Tour</h2>
+<form action="/Tour/Create" method="POST">
+    <div>
+        <label>Tour Name:</label> <input type="text" name="TourName" />
+    </div>
+    <div>
+        <label>Description:</label> <input type="text" name="Description" />
+    </div>
+    <div>
+        <label>Location:</label> <input type="Text" name="Location" />
+    </div>
+    <div>
+        <label>Price:</label> <input type="number" name="Price" />
+    </div>
+    <div>
+        <input type="submit" value="Add Tour" />
+
+    </div>
+</form>
+

@@ -1,0 +1,12 @@
+﻿@model IEnumerable<PassionProjectN01649276.Models.CustomerDto>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+@foreach (var customer in Model)
+{
+    <h3><a href="/Customer/Show/@customer.CustomerId">@customer.CustomerName</a></h3>
+
+}
+
