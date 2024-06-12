@@ -308,6 +308,9 @@
     <Content Include="Views\Booking\New.cshtml" />
     <Content Include="Views\Booking\Edit.cshtml" />
     <Content Include="Views\Booking\Error.cshtml" />
+    <Content Include="Views\Tour\DeleteConfirm.cshtml" />
+    <Content Include="Views\Customer\DeleteConfirm.cshtml" />
+    <Content Include="Views\Booking\DeleteConfirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

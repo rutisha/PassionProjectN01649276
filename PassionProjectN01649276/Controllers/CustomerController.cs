@@ -132,24 +132,33 @@ namespace PassionProjectN01649276.Controllers
         }
 
         // GET: Customer/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Deleteconfirm(int id)
         {
-            return View();
+            string url = "findcustomer/" + id;
+
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            CustomerDto selectedcustomer = response.Content.ReadAsAsync<CustomerDto>().Result;
+
+            return View(selectedcustomer);
         }
 
         // POST: Customer/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id)
         {
-            try
+            string url = "deletecustomer/" + id;
+            HttpContent content = new StringContent("");
+            content.Headers.ContentType.MediaType = "application/json";
+            HttpResponseMessage response = client.PostAsync(url,content).Result;
+            
+            if(response.IsSuccessStatusCode)
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                return RedirectToAction("List");
             }
-            catch
+            else
             {
-                return View();
+                return RedirectToAction("Error");
             }
         }
     }
