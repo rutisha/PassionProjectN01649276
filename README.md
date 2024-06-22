@@ -1,7 +1,8 @@
-TreKKSoft - Tour Management System
+# TreKKSoft - Tour Management System
+
 Trekksoft is a comprehensive web application designed to streamline travel planning and management for travel companies. It serves as a centralized platform for managing bookings, expenses, and travel purposes.
 
-Features
+## Features
 CRUD Operations: Supports Create, Read, Update, and Delete operations for entities including Customers, Tours, and Bookings.
 
 Tabular Relationship: Implements a one-to-many relationship between Customers and Tours using a bridging table named 'Booking', facilitating flexible booking management.
@@ -10,7 +11,7 @@ ViewModels: Utilizes ViewModels to optimize data sharing between different model
 
 Views: Provides a user-friendly interface designed for ease of use and efficient navigation.
 
-Technologies Used
+## Technologies Used
 ASP.NET MVC Framework: Provides a robust architecture for building dynamic web applications.
 
 C# Programming Language: Powers the server-side scripting and backend logic.
@@ -21,7 +22,7 @@ HTML/Bootstrap: Frontend development is based on HTML for structure and Bootstra
 
 SQL Server Object Explorer (SOE): Manages relational database operations, ensuring efficient storage and retrieval of application data.
 
-Setup Instructions
+## Setup Instructions
 Prerequisites: Ensure you have .NET Framework installed on your development environment.
 
 Database Setup:
@@ -39,7 +40,7 @@ Running the Application:
 
 Set the Travel Services Directory project as the startup project.
 
-Additional Notes
+## Additional Notes
 Deployment: For production deployment, configure the application to use a secure connection string and host on a suitable web server.
 
 Enhancements: Consider adding authentication and authorization features to secure sensitive data and operations.
