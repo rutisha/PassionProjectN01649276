@@ -205,6 +205,40 @@ namespace PassionProjectN01649276.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        /// <summary>
+        /// Searches for tours that match the given search string.
+        /// </summary>
+        /// <param name="searchString">The search string to filter tours.</param>
+        /// <returns>A list of TourDto objects that match the search criteria.</returns>
+        /// <example>
+        /// GET: api/TourData/SearchTours?searchString=Adventure =>
+        /// <TourDto>
+        /// <TourId>789</TourId>
+        /// <TourName>Adventure Trek</TourName>
+        /// <Description>Explore the wilderness in this thrilling adventure.</Description>
+        /// <Location>Mountains</Location>
+        /// <Price>199.99</Price>
+        /// </TourDto>
+        /// </example>
+        [HttpGet]
+        [Route("api/TourData/SearchTours")]
+        public List<TourDto> SearchTours(string searchString)
+        {
+            var tours = db.Tours
+                .Where(t => t.Tourname.Contains(searchString))
+                .ToList();
+
+            return tours.Select(t => new TourDto
+            {
+                Tourid = t.Tourid,
+                Tourname = t.Tourname,
+                Description = t.Description,
+                Location = t.Location,
+                Price = t.Price
+                // Add more properties as needed
+            }).ToList();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

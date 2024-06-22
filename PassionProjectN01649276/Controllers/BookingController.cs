@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using PassionProjectN01649276.Models;
+using PassionProjectN01649276.Models.View_Models;
 using System.Web.Script.Serialization;
 
 namespace PassionProjectN01649276.Controllers
@@ -18,13 +19,20 @@ namespace PassionProjectN01649276.Controllers
         static BookingController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44344/api/bookingdata/");
+            client.BaseAddress = new Uri("https://localhost:44344/api/");
         }
         // GET: Booking/List
-        public ActionResult List()
+        public ActionResult List(string searchString)
         {
+            
 
-            string url = "listbookings";
+
+            string url = "bookingdata/listbookings";
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                url += $"?searchString={searchString}";
+            }
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
@@ -36,14 +44,14 @@ namespace PassionProjectN01649276.Controllers
         //GET: Booking/Show/3
         public ActionResult Show(int id)
         {
-            string url = "findbooking/" + id;
+            string url = "bookingdata/findbooking/" + id;
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
-            BookingDto Selectedbooking = response.Content.ReadAsAsync<BookingDto>().Result;
-
-            return View(Selectedbooking);
-        }
+            BookingDto selectedBooking = response.Content.ReadAsAsync<BookingDto>().Result;
+           
+            return View(selectedBooking);
+        } 
 
         // POST: Booking/Create
         [HttpPost]
@@ -51,7 +59,7 @@ namespace PassionProjectN01649276.Controllers
         {
             Debug.WriteLine("the json payload is :");
 
-            string url = "addbooking";
+            string url = "bookingdata/addbooking";
 
 
             string jsonpayload = jss.Serialize(booking);
@@ -80,7 +88,22 @@ namespace PassionProjectN01649276.Controllers
         }
         public ActionResult New()
         {
-            return View();
+
+            string url = "customersdata/listcustomers";
+            HttpResponseMessage response = client.GetAsync(url).Result;
+
+            CreateBooking CreateBookingViewModel = new CreateBooking();
+            IEnumerable<CustomerDto> CustomersOptions = response.Content.ReadAsAsync<IEnumerable<CustomerDto>>().Result;
+
+            CreateBookingViewModel.Customers = CustomersOptions;
+
+            url = "Tourdata/listtours";
+            response = client.GetAsync(url).Result;
+            IEnumerable<TourDto> tours = response.Content.ReadAsAsync<IEnumerable<TourDto>>().Result;
+
+            CreateBookingViewModel.Tours = tours;
+
+            return View(CreateBookingViewModel);
         }
 
         // GET: Booking/Edit/5

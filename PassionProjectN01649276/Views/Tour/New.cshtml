@@ -3,23 +3,35 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create New Tour</h2>
-<form action="/Tour/Create" method="POST">
-    <div>
-        <label>Tour Name:</label> <input type="text" name="TourName" />
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title fw-bold">Create New Tour</h2>
+                </div>
+                <div class="card-body">
+                    <form action="/Tour/Create" method="POST">
+                        <div class="mb-3">
+                            <label for="TourName" class="form-label">Tour Name:</label>
+                            <input type="text" class="form-control" id="TourName" name="TourName" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Description" class="form-label">Description:</label>
+                            <input type="text" class="form-control" id="Description" name="Description" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Location" class="form-label">Location:</label>
+                            <input type="text" class="form-control" id="Location" name="Location" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Price" class="form-label">Price:</label>
+                            <input type="number" class="form-control" id="Price" name="Price" />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Tour</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label>Description:</label> <input type="text" name="Description" />
-    </div>
-    <div>
-        <label>Location:</label> <input type="Text" name="Location" />
-    </div>
-    <div>
-        <label>Price:</label> <input type="number" name="Price" />
-    </div>
-    <div>
-        <input type="submit" value="Add Tour" />
-
-    </div>
-</form>
-
+</div>

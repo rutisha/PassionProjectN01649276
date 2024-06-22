@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using PassionProjectN01649276.Models;
+using PassionProjectN01649276.Models.View_Models;
 
 namespace PassionProjectN01649276.Controllers
 {
@@ -21,13 +22,18 @@ namespace PassionProjectN01649276.Controllers
         static TourController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44344/api/tourdata/");
+            client.BaseAddress = new Uri("https://localhost:44344/api/");
         }
         // GET: Tour/List
-        public ActionResult List()
+        public ActionResult List(string searchString)
         {
           
-            string url = "listtours";
+            string url = "tourdata/listtours";
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                url += $"?searchString={searchString}";
+            }
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
@@ -39,13 +45,24 @@ namespace PassionProjectN01649276.Controllers
         //GET: Tour/Show/3
         public ActionResult Show(int id)
         {
-            string url = "findtour/" + id;
+            TourBookings ViewModel = new TourBookings();
+
+        
+            string url = "tourdata/findtour/" + id;
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
-            TourDto Selectedtour = response.Content.ReadAsAsync<TourDto>().Result;
+            TourDto SelectedTour = response.Content.ReadAsAsync<TourDto>().Result;
+      
+            ViewModel.SelectedTour = SelectedTour;
 
-            return View(Selectedtour);
+            url = "bookingdata/listbookingsfortour/" + id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<BookingDto> RelatedCustomers = response.Content.ReadAsAsync<IEnumerable<BookingDto>>().Result;
+
+            ViewModel.RelatedCustomers = RelatedCustomers;
+
+            return View(ViewModel);
         }
 
         // POST: Tour/Create
@@ -55,7 +72,7 @@ namespace PassionProjectN01649276.Controllers
         {
             Debug.WriteLine("the json payload is :");
           
-            string url = "addtour";
+            string url = "tourdata/addtour";
 
 
             string jsonpayload = jss.Serialize(Tour);
@@ -95,7 +112,7 @@ namespace PassionProjectN01649276.Controllers
         // GET: Tour/Edit/5
         public ActionResult Edit(int id)
         {
-            string url = "findtour/" + id;
+            string url = "tourdata/findtour/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             //Debug.WriteLine("The response code is ");
@@ -122,7 +139,7 @@ namespace PassionProjectN01649276.Controllers
                 //serialize into JSON
                 //Send the request to the API
 
-                string url = "updatetour/" + id;
+                string url = "tourdata/updatetour/" + id;
 
 
                 string jsonpayload = jss.Serialize(tour);
@@ -145,7 +162,7 @@ namespace PassionProjectN01649276.Controllers
         // GET: Tour/Delete/5
         public ActionResult Deleteconfirm(int id)
         {
-            string url = "findtour/" + id;
+            string url = "tourdata/findtour/" + id;
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
@@ -158,7 +175,7 @@ namespace PassionProjectN01649276.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            string url = "deletetour/" + id;
+            string url = "tourdata/deletetour/" + id;
 
             HttpContent content = new StringContent("");
 

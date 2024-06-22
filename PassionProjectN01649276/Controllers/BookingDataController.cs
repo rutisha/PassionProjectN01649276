@@ -57,7 +57,7 @@ namespace PassionProjectN01649276.Controllers
         /// <example>
         /// GET: api/Bookingdata/FindBooking/2
         /// </example>
-        [ResponseType(typeof(Booking))]
+        [ResponseType(typeof(BookingDto))]
         [HttpGet]
         [Route("api/Bookingdata/FindBooking/{id}")]
         public IHttpActionResult FindBooking(int id)
@@ -210,6 +210,83 @@ namespace PassionProjectN01649276.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [HttpGet]
+        [ResponseType(typeof(BookingDto))]
+        [Route("api/BookingData/ListBookingsForCustomer/{id}")]
+        public IHttpActionResult ListBookingsForCustomer(int id)
+         {
+            // SQL Equivalent:
+            // Select * from bookings where bookings.customerid = {id}
+            List<Booking> bookings = db.Bookings.Where(b => b.CustomerId == id).ToList();
+            List<BookingDto> bookingDtos = new List<BookingDto>();
+
+            bookings.ForEach(b => bookingDtos.Add(new BookingDto()
+            {
+                BookingId= b.BookingId,
+                Bookingdate = b.Bookingdate,
+                CustomerId = b.Customer.CustomerId,
+                CustomerName = b.Customer.CustomerName,
+                TourId = b.Tour.Tourid,
+                TourName = b.Tour.Tourname
+            }));
+            
+            return Ok(bookingDtos);
+         }
+
+        [HttpGet]
+        [ResponseType(typeof(List<BookingDto>))]
+        [Route("api/BookingData/ListBookingsForTour/{id}")]
+        public IHttpActionResult ListBookingsForTour(int id)
+        {
+            // SQL Equivalent:
+            // Select * from bookings where bookings.tourid = {id}
+            List<Booking> bookings = db.Bookings.Where(b => b.TourId == id).ToList();
+            List<BookingDto> bookingDtos = new List<BookingDto>();
+
+            bookings.ForEach(b => bookingDtos.Add(new BookingDto()
+            {
+                BookingId = b.BookingId,
+                Bookingdate = b.Bookingdate,
+                CustomerId = b.Customer.CustomerId,
+                CustomerName = b.Customer.CustomerName,
+                TourId = b.Tour.Tourid,
+                TourName = b.Tour.Tourname
+            }));
+
+            return Ok(bookingDtos);
+        }
+
+        /// <summary>
+        /// Searches for bookings that match the given search string.
+        /// </summary>
+        /// <param name="searchString">The search string to filter bookings.</param>
+        /// <returns>A list of BookingDto objects that match the search criteria.</returns>
+        /// <example>
+        /// GET: api/BookingData/SearchBookings?searchString=John =>
+        /// <BookingDto>
+        /// <BookingId>1</BookingId>
+        /// <CustomerId>123</CustomerId>
+        /// <TourId>456</TourId>
+        /// <BookingDate>2024-06-21</BookingDate>
+        /// </BookingDto>
+        /// </example>
+        [HttpGet]
+        [Route("api/BookingData/SearchBookings")]
+        public List<BookingDto> SearchBookings(string searchString)
+        {
+            var bookings = db.Bookings
+                .Where(b => b.Customer.CustomerName.Contains(searchString)) 
+                .ToList();
+
+            return bookings.Select(b => new BookingDto
+            {
+                BookingId = b.BookingId,
+                CustomerId = b.CustomerId,
+                TourId = b.TourId,
+                Bookingdate = b.Bookingdate
+                // Add more properties as needed
+            }).ToList();
+        }
         private bool BookingExists(int id)
         {
             return db.Bookings.Count(e => e.BookingId == id) > 0;

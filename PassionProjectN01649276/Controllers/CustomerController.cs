@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using PassionProjectN01649276.Models;
+using PassionProjectN01649276.Models.View_Models;
 
 namespace PassionProjectN01649276.Controllers
 {
@@ -18,13 +19,18 @@ namespace PassionProjectN01649276.Controllers
         static CustomerController()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44344/api/customerdata/");
+            client.BaseAddress = new Uri("https://localhost:44344/api/");
         }
         // GET: Customer/List
-        public ActionResult List()
+        public ActionResult List(string searchString)
         {
 
-            string url = "listcustomers";
+            string url = "customerdata/listcustomers";
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                url += $"?searchString={searchString}";
+            }
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
@@ -36,14 +42,29 @@ namespace PassionProjectN01649276.Controllers
         //GET: Customer/Show/3
         public ActionResult Show(int id)
         {
-            string url = "findcustomer/" + id;
+           CustomerBookings ViewModel = new CustomerBookings(); 
+
+            string url = "customerdata/findcustomer/" + id;
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             CustomerDto Selectedcustomer = response.Content.ReadAsAsync<CustomerDto>().Result;
 
-            return View(Selectedcustomer);
+            Debug.WriteLine("Customer received : ");
+            Debug.WriteLine(Selectedcustomer.CustomerName);
+
+            // defining the viewModel class property
+            ViewModel.SelectedCustomer = Selectedcustomer;
+
+            url = "bookingdata/listbookingsforcustomer/" + id;
+            response = client.GetAsync(url).Result;
+            IEnumerable<BookingDto> RelatedBookings = response.Content.ReadAsAsync<IEnumerable<BookingDto>>().Result;
+
+            ViewModel.RelatedBookings = RelatedBookings;
+
+            return View(ViewModel);
         }
+
 
         // POST: Customer/Create
         [HttpPost]
@@ -51,7 +72,7 @@ namespace PassionProjectN01649276.Controllers
         {
             Debug.WriteLine("the json payload is :");
 
-            string url = "addcustomer";
+            string url = "customerdata/addcustomer";
 
 
             string jsonpayload = jss.Serialize(Customer);
@@ -86,7 +107,7 @@ namespace PassionProjectN01649276.Controllers
         // GET: Customer/Edit/5
         public ActionResult Edit(int id)
         {
-            string url = "findcustomer/" + id;
+            string url = "customerdata/findcustomer/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             //Debug.WriteLine("The response code is ");
@@ -111,7 +132,7 @@ namespace PassionProjectN01649276.Controllers
                 //serialize into JSON
                 //Send the request to the API
 
-                string url = "UpdateCustomer/" + id;
+                string url = "customerdata/UpdateCustomer/" + id;
 
 
                 string jsonpayload = jss.Serialize(customer);
@@ -134,7 +155,7 @@ namespace PassionProjectN01649276.Controllers
         // GET: Customer/Delete/5
         public ActionResult Deleteconfirm(int id)
         {
-            string url = "findcustomer/" + id;
+            string url = "customerdata/findcustomer/" + id;
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
@@ -147,7 +168,7 @@ namespace PassionProjectN01649276.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            string url = "deletecustomer/" + id;
+            string url = "customerdata/deletecustomer/" + id;
             HttpContent content = new StringContent("");
             content.Headers.ContentType.MediaType = "application/json";
             HttpResponseMessage response = client.PostAsync(url,content).Result;

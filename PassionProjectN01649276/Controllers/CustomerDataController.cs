@@ -199,7 +199,35 @@ namespace PassionProjectN01649276.Controllers
             Debug.WriteLine("None of the conditions triggered");
             return StatusCode(HttpStatusCode.NoContent);
         }
+        /// <summary>
+        /// Searches for customers that match the given search string.
+        /// </summary>
+        /// <param name="searchString">The search string to filter customers.</param>
+        /// <returns>A list of CustomerDto objects that match the search criteria.</returns>
+        /// <example>
+        /// GET: api/CustomerData/SearchCustomers?searchString=John =>
+        /// <CustomerDto>
+        /// <CustomerId>123</CustomerId>
+        /// <CustomerName>John Doe</CustomerName>
+        /// <Email>john.doe@example.com</Email>
+        /// </CustomerDto>
+        /// </example>
+        [HttpGet]
+        [Route("api/CustomerData/SearchCustomers")]
+        public List<CustomerDto> SearchCustomers(string searchString)
+        {
+            var customers = db.Customers
+                .Where(c => c.CustomerName.Contains(searchString))
+                .ToList();
 
+            return customers.Select(c => new CustomerDto
+            {
+                CustomerId = c.CustomerId,
+                CustomerName = c.CustomerName,
+                Email = c.Email
+                // Add more properties as needed
+            }).ToList();
+        }
         private bool CustomerExists(int id)
         {
             return db.Customers.Count(e => e.CustomerId == id) > 0;
