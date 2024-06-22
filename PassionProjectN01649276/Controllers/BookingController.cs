@@ -109,7 +109,7 @@ namespace PassionProjectN01649276.Controllers
         // GET: Booking/Edit/5
         public ActionResult Edit(int id)
         {
-            string url = "findbooking/" + id;
+            string url = "bookingdata/findbooking/" + id;
             HttpResponseMessage response = client.GetAsync(url).Result;
 
             //Debug.WriteLine("The response code is ");
@@ -136,7 +136,7 @@ namespace PassionProjectN01649276.Controllers
                 //serialize into JSON
                 //Send the request to the API
 
-                string url = "UpdateBooking/" + id;
+                string url = "bookingdata/UpdateBooking/" + id;
 
 
                 string jsonpayload = jss.Serialize(booking);
@@ -159,7 +159,7 @@ namespace PassionProjectN01649276.Controllers
         // GET: Booking/Delete/5
         public ActionResult Deleteconfirm(int id)
         {
-            string url = "findbooking/" + id;
+            string url = "bookingdata/findbooking/" + id;
 
             HttpResponseMessage response = client.GetAsync(url).Result;
 
